@@ -1,33 +1,52 @@
 <template>
     <div class="pagina open-sans">
-        <div class="columna-imagen">
-            <div class="imagen-placeholder">
-            </div>
-        </div>
 
         <div class="columna-formulario">
             <div class="barra-superior">
-                <router-link to="/" class="link-registrate">Volver</router-link>
-                <span class="texto-cuenta">¿No tienes cuenta?</span>
-                <router-link to="/registrar" class="link-registrate">Regístrate</router-link>
+                <router-link to="/" class="link-ingresar">Volver</router-link>
+                <span class="texto-cuenta">¿Ya tiene una cuenta?</span>
+                <router-link to="/login" class="link-ingresar">Ingresar</router-link>
             </div>
 
             <div class="contenedor-form">
                 <div class="logo-form">
+           
                 </div>
-                <h2 class="campo">Ingresar Usuario</h2>
+                <h2 class="titulo-form">Registrar Usuario</h2>
 
                 <div class="campo">
-                    <label class="etiqueta">Usuario o correo:</label>
-                    <input type="text" v-model="usuario" class="input-campo">
+                    <label class="etiqueta">Correo Electrónico</label>
+                    <input type="email" v-model="correo" class="input-campo">
                 </div>
 
                 <div class="campo">
-                    <label class="etiqueta">Contraseña:</label>
-                    <input type="password" v-model="password" class="input-campo">
+                    <label class="etiqueta">Nombre del Usuario</label>
+                    <input type="text" v-model="nombre" class="input-campo">
                 </div>
 
-                <button class="btn-ingresar" @click.prevent="login">Ingresar</button>
+                <div class="campo">
+                    <label class="etiqueta">Contraseña</label>
+                    <input type="password" v-model="contrasena" class="input-campo">
+                </div>
+
+                <div class="campo">
+                    <label class="etiqueta">Confirmar Contraseña</label>
+                    <input type="password" v-model="confirmacion" class="input-campo">
+                </div>
+
+                <div class="campo">
+                    <input type="checkbox" v-model="acepto" id="chk-acepto" class="checkbox">
+                    <label for="chk-acepto" class="chk-acepto">Acepto los términos y condiciones</label>
+                </div>
+
+                <div class="requisitos">
+                    <p class="requisito-item">Mínimo 8 caracteres de longitud</p>
+                    <p class="requisito-item">Al menos una letra mayúscula</p>
+                    <p class="requisito-item">Al menos un número o carácter especial</p>
+                    <p class="requisito-item">Las contraseñas deben coincidir</p>
+                </div>
+
+                <button class="btn-registrar" @click="registrar">Registrar</button>
 
                 <div v-if="mensajeWarning" class="warning" style="display: block;">{{ mensajeWarning }}</div>
                 <div v-if="mensajeSuccess" class="success" style="display: block;">{{ mensajeSuccess }}</div>
@@ -42,50 +61,60 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-const usuario = ref('')
-const password = ref('')
+const correo = ref('')
+const nombre = ref('')
+const contrasena = ref('')
+const confirmacion = ref('')
+const acepto = ref(false)
+
 const mensajeWarning = ref('')
 const mensajeSuccess = ref('')
 
-const login = () => {
-
+const registrar = () => {
     mensajeWarning.value = ''
     mensajeSuccess.value = ''
 
-
-    if (usuario.value.trim() === '') {
-        mensajeWarning.value = "Por favor digite un usuario o correo"
+    if (correo.value.trim() === '') {
+        mensajeWarning.value = "Por favor digite un correo"
         return
     }
-    if (password.value === '') {
+    if (nombre.value.trim() === '') {
+        mensajeWarning.value = "Por favor digite un nombre"
+        return
+    }
+    if (contrasena.value === '') {
         mensajeWarning.value = "Por favor digite una contraseña"
         return
     }
-
-
-    const usuarioGuardado = localStorage.getItem('usuarioRegistrado')
-    const passGuardada = localStorage.getItem('contraRegistrada')
-
-    if (usuarioGuardado && (usuario.value.trim() === usuarioGuardado) && (password.value === passGuardada)) {
-        mensajeSuccess.value = "¡Ingreso exitoso!"
-        
-        setTimeout(() => {
-            router.push('/')
-        }, 1000)
-    } else {
-        mensajeWarning.value = "Usuario o contraseña incorrectos"
+    if (confirmacion.value === '') {
+        mensajeWarning.value = "Por favor confirme la contraseña"
+        return
     }
+    if (!acepto.value) {
+        mensajeWarning.value = "Por favor acepte los términos y condiciones"
+        return
+    }
+    if (contrasena.value !== confirmacion.value) {
+        mensajeWarning.value = "Las contraseñas no coinciden"
+        return
+    }
+
+  
+    localStorage.setItem('usuarioRegistrado', correo.value.trim())
+    localStorage.setItem('nombreRegistrado', nombre.value.trim())
+    localStorage.setItem('contraRegistrada', contrasena.value)
+
+    mensajeSuccess.value = `Señor/a ${nombre.value}, ha sido registrado/a correctamente`
+    
+    console.log("REGISTRO EXITOSO - Guardado en LocalStorage:", correo.value.trim())
+    alert("REGISTRO EXITOSO!!!!")
+
+    setTimeout(() => {
+        router.push('/login')
+    }, 1200)
 }
 </script>
-
-
-<script>
-export default {
-
-}
-</script>
-
-<style>
+<style scoped>
 *{
     padding: 0;
     margin: 0;
@@ -124,7 +153,7 @@ export default {
     justify-content: center;
 }
 
-.img-login {
+.img-registro {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -152,28 +181,35 @@ export default {
     color: #000000;
 }
 
-.link-registrate {
+.link-ingresar {
     font-size: 14px;
     color: #0092FF;
     text-decoration: underline;
     text-underline-offset: 3px;
 }
 
-.link-registrate:hover {
+.link-ingresar:hover {
     color: #0CC200;
 }
 
 .contenedor-form {
-    padding: 80px 40px 40px 40px;
+    padding: 40px 28px;
     display: flex;
     flex-direction: column;
     gap: 0;
 }
 
+.titulo-form {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 28px;
+}
+
 .campo {
     display: flex;
     flex-direction: column;
-    margin-bottom: 28px;
+    margin-bottom: 18px;
 }
 
 .etiqueta {
@@ -190,15 +226,24 @@ export default {
     font-family: "Open Sans", sans-serif;
     font-size: 14px;
     color: #1a1a1a;
-    outline: none;
     background-color: #fff;
 }
 
-.input-campo:focus {
-    border-color: #0092FF;
+
+.requisitos {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 24px;
 }
 
-.btn-ingresar {
+.requisito-item {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.5;
+}
+
+.btn-registrar {
     width: 100%;
     padding: 14px;
     background-color: #0CC200;
@@ -210,11 +255,23 @@ export default {
     cursor: pointer;
     border-radius: 2px;
     letter-spacing: 0.5px;
-    margin-top: 8px;
 }
 
-.btn-ingresar:hover {
+.btn-registrar:hover {
     background-color: #0092FF;
+}
+
+.checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.chk-acepto {
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    margin-left: 8px;
 }
 
 .warning {
@@ -237,13 +294,14 @@ export default {
     display: none;
 }
 
+
 @media (max-width: 1280px) {
     .columna-formulario {
         width: 440px;
     }
 
     .contenedor-form {
-        padding: 60px 36px 40px;
+        padding: 36px 24px;
     }
 }
 
@@ -262,7 +320,12 @@ export default {
     }
 
     .contenedor-form {
-        padding: 50px 28px 36px;
+        padding: 30px 24px;
+    }
+
+    .titulo-form {
+        font-size: 1.2rem;
+        margin-bottom: 22px;
     }
 }
 
@@ -292,13 +355,28 @@ export default {
 
     .barra-superior {
         padding: 14px 20px;
+        flex-wrap: wrap;
+        gap: 10px;
     }
 
     .contenedor-form {
-        padding: 36px 24px 32px;
+        padding: 28px 24px 32px;
     }
 
-    .btn-ingresar {
+    .titulo-form {
+        font-size: 1.15rem;
+        margin-bottom: 20px;
+    }
+
+    .campo {
+        margin-bottom: 14px;
+    }
+
+    .requisitos {
+        margin-bottom: 20px;
+    }
+
+    .btn-registrar {
         padding: 13px;
         font-size: 14px;
     }
@@ -310,20 +388,28 @@ export default {
     }
 
     .contenedor-form {
-        padding: 28px 16px 28px;
+        padding: 22px 16px 28px;
     }
 
     .barra-superior {
         padding: 12px 16px;
-        gap: 10px;
+        gap: 8px;
     }
 
     .texto-cuenta {
         font-size: 13px;
     }
 
-    .link-registrate {
+    .link-ingresar {
         font-size: 13px;
+    }
+
+    .titulo-form {
+        font-size: 1.1rem;
+    }
+
+    .requisito-item {
+        font-size: 12px;
     }
 }
 .logo-form {
