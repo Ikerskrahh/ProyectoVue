@@ -19,6 +19,12 @@ npm run build
 ```
 npm run lint
 ```
+### Clone Proyect
+git clone 
 
+### Install Proyect
+```
+npm install
+```
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
