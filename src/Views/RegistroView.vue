@@ -1,15 +1,16 @@
 <template>
-  <ComponnentsRegistro></ComponnentsRegistro>
-  <ComponnentsLogin></ComponnentsLogin>
+    <ComponnentsRegistro>
+    </ComponnentsRegistro>
+
 </template>
 
 <script>
-import ComponnentsLogin from '@/components/ComponnentsLogin.vue';
+
 import ComponnentsRegistro from '@/components/ComponnentsRegistro.vue';
 export default {
     components:{
-        ComponnentsRegistro,
-        ComponnentsLogin
+        ComponnentsRegistro
+      
         
         
     }

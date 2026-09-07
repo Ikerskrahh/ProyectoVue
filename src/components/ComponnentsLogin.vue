@@ -14,6 +14,7 @@
 
             <div class="contenedor-form">
                 <div class="logo-form">
+                    <img src=@/assets/logo1.png alt="Logo" class="img-logo-form">
                 </div>
                 <h2 class="campo">Ingresar Usuario</h2>
 
@@ -68,7 +69,6 @@ const login = () => {
 
     if (usuarioGuardado && (usuario.value.trim() === usuarioGuardado) && (password.value === passGuardada)) {
         mensajeSuccess.value = "¡Ingreso exitoso!"
-        
         setTimeout(() => {
             router.push('/')
         }, 1000)

@@ -10,7 +10,7 @@
 
             <div class="contenedor-form">
                 <div class="logo-form">
-           
+                    <img src=@/assets/logo1.png  alt="Logo" class="img-logo-form">
                 </div>
                 <h2 class="titulo-form">Registrar Usuario</h2>
 

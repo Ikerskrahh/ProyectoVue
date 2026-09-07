@@ -1,9 +1,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from './router/index1.js' 
+
 import LoginView from './Views/LoginView.vue'
-const app = createApp(App)
-createApp(LoginView)
+import router from './router'
+const app = createApp(App).use(router)
+createApp(LoginView).use(router)
 app.use(router)
 
 app.mount('#app')
