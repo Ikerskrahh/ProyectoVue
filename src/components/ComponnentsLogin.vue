@@ -7,7 +7,7 @@
 
         <div class="columna-formulario">
             <div class="barra-superior">
-                <router-link to="/" class="link-registrate">Volver</router-link>
+                <router-link to="/principal" class="link-registrate">Volver</router-link>
                 <span class="texto-cuenta">¿No tienes cuenta?</span>
                 <router-link to="/registrar" class="link-registrate">Regístrate</router-link>
             </div>
@@ -70,7 +70,7 @@ const login = () => {
     if (usuarioGuardado && (usuario.value.trim() === usuarioGuardado) && (password.value === passGuardada)) {
         mensajeSuccess.value = "¡Ingreso exitoso!"
         setTimeout(() => {
-            router.push('/')
+            router.push('/principal')
         }, 1000)
     } else {
         mensajeWarning.value = "Usuario o contraseña incorrectos"
